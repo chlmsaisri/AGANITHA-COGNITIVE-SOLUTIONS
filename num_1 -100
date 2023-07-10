@@ -1,0 +1,18 @@
+// C program that prints numbers from 1 to 100 according to the given condition
+
+#include <stdio.h>
+
+int main() {
+    for (int i = 1; i <= 100; i++) {
+        if (i % 3 == 0 && i % 5 == 0) {
+            printf("amazon\n");
+        } else if (i % 3 == 0) {
+            printf("google\n");
+        } else if (i % 5 == 0) {
+            printf("facebook\n");
+        } else {
+            printf("%d\n", i);
+        }
+    }
+    return 0;
+}
