@@ -1,0 +1,83 @@
+//C progra that sorts an array of student structures according to the given rules
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Student {
+    char name[50];
+    int chemistryMarks;
+    int biologyMarks;
+    char dob[11];
+};
+
+int compareStudents(const void* a, const void* b) {
+    struct Student* studentA = (struct Student*)a;
+    struct Student* studentB = (struct Student*)b;
+
+    // First priority: Total marks
+    int totalMarksA = studentA->chemistryMarks + studentA->biologyMarks;
+    int totalMarksB = studentB->chemistryMarks + studentB->biologyMarks;
+    if (totalMarksA > totalMarksB) {
+        return -1;
+    }
+    if (totalMarksA < totalMarksB) {
+        return 1;
+    }
+
+    // Second priority: Biology marks
+    if (studentA->biologyMarks > studentB->biologyMarks) {
+        return -1;
+    }
+    if (studentA->biologyMarks < studentB->biologyMarks) {
+        return 1;
+    }
+
+    // Third priority: Date of birth (assumed to be in DD-MM-YYYY format)
+    int dayA, monthA, yearA;
+    int dayB, monthB, yearB;
+    sscanf(studentA->dob, "%d-%d-%d", &dayA, &monthA, &yearA);
+    sscanf(studentB->dob, "%d-%d-%d", &dayB, &monthB, &yearB);
+    if (yearA < yearB) {
+        return -1;
+    }
+    if (yearA > yearB) {
+        return 1;
+    }
+    if (monthA < monthB) {
+        return -1;
+    }
+    if (monthA > monthB) {
+        return 1;
+    }
+    if (dayA < dayB) {
+        return -1;
+    }
+    if (dayA > dayB) {
+        return 1;
+    }
+
+    return 0;
+}
+
+int main() {
+    // Sample array of student structures
+    struct Student students[] = {
+        { "Virat Kohli", 80, 90, "12-05-1998" },
+        { "Rohith sharma", 70, 95, "15-07-1999" },
+        { "Viswanathan Anand", 80, 90, "23-03-1998" },
+        { "Leo Messi", 75, 90, "02-09-1998" }
+    };
+
+    int numStudents = sizeof(students) / sizeof(students[0]);
+
+    // Sort the students array using qsort
+    qsort(students, numStudents, sizeof(struct Student), compareStudents);
+
+    // Print the sorted array of student structures
+    for (int i = 0; i < numStudents; i++) {
+        printf("Name: %s, Chemistry Marks: %d, Biology Marks: %d, Date of Birth: %s\n",
+            students[i].name, students[i].chemistryMarks, students[i].biologyMarks, students[i].dob);
+    }
+
+    return 0;
+}
